@@ -11,7 +11,9 @@
     - Para passar um valor do vetor para uma função, a mesma deve possuir um ponteiro capaz de armazenar o endereço de memória do valor fornecido.
 
     - Representação de vetor:
-    ![Representação de vetor](https://embarcados.com.br/wp-content/uploads/2015/12/Mem%C3%B3ria13.png)
+      
+      ![Representação de vetor](https://embarcados.com.br/wp-content/uploads/2015/12/Mem%C3%B3ria13.png)
+
     - Na imagem, vemos um vetor alocado na memória do computador, ocupando os espaços de memória endereçados entre 108 e 144. Bem como um ponteiro alocado no endereço 100 da memória, que armazena o endereço do primeiro índice do vetor.
 
   - **Exemplo de vetor em linguagem C:**
