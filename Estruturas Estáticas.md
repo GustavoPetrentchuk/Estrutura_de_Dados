@@ -64,33 +64,42 @@ int main() {
 ```c
 #include <stdio.h>
 #include <stdlib.h>
+#include <Windows.h>
 
 int main() {
-    int tamanho;
+    int *vetor = NULL;
+    int tamanho = 0;
 
-    printf("Digite o tamanho do vetor: ");
-    scanf("%d", &tamanho);
+    printf("Digite numeros inteiros (digite 0 para sair):\n");
 
-    // Aloca dinamicamente memória para o vetor com base no tamanho fornecido pelo usuário
-    int *vetor = (int *)malloc(tamanho * sizeof(int));
+    int numero;
+    do {
+        printf("Digite um numero: ");
+        scanf("%d", &numero);
 
-    if (vetor == NULL) {
-        printf("Erro na alocação de memória.\n");
-        return 1; // Saída com erro
-    }
+        if (numero != 0) {
+            // Aloca memória dinamicamente para um novo elemento
+            int *novoVetor = (int *)realloc(vetor, (tamanho + 1) * sizeof(int));
 
-    printf("Digite os valores para cada índice do vetor:\n");
-    for (int i = 0; i < tamanho; i++) {
-        printf("Valor %d: ", i);
-        scanf("%d", &vetor[i]);
-    }
+            if (novoVetor == NULL) {
+                printf("Erro na alocacao de memoria.\n");
+                free(vetor);
+                return 1;
+            }
 
-    printf("Valores do vetor:\n");
+            vetor = novoVetor;
+            vetor[tamanho] = numero;
+            tamanho++;
+        }
+    } while (numero != 0);
+
+    printf("Valores digitados:\n");
     for (int i = 0; i < tamanho; i++) {
         printf("%d ", vetor[i]);
     }
     printf("\n");
 
+    Sleep(5000);
     free(vetor);
 
     return 0;
