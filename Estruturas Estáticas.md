@@ -60,7 +60,7 @@ int main() {
 
 
   - **Exemplo alocação dinâmica com vetor em linguagem C:**
-     - Similar ao exemplo anterior com vetor, esse código solicita ao usuário um valor para o tamanho do vetor e aloca dinâmicamente os espaços de memória para o mesmo.
+     - Nesse exemplo o código solicita ao usuário um valor para o vetor e aloca dinâmicamente os espaços de memória.
 ```c
 #include <stdio.h>
 #include <stdlib.h>
