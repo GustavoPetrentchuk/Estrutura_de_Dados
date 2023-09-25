@@ -10,9 +10,9 @@
     - Passar um vetor como argumento para uma função em C, na verdade, você está passando um ponteiro que aponta para o endereço de memória da primeira posição do vetor.
     - Para passar um valor do vetor para uma função, a mesma deve possuir um ponteiro capaz de armazenar o endereço de memória do valor fornecido.
 
-    Representação de vetor:
+    - Representação de vetor:
     ![Representação de vetor](https://embarcados.com.br/wp-content/uploads/2015/12/Mem%C3%B3ria13.png)
-    Na imagem, vemos um vetor alocado na memória do computador, ocupando os espaços de memória endereçados entre 108 e 144. Bem como um ponteiro alocado no endereço 100 da memória, que armazena o endereço do primeiro índice do vetor.
+    - Na imagem, vemos um vetor alocado na memória do computador, ocupando os espaços de memória endereçados entre 108 e 144. Bem como um ponteiro alocado no endereço 100 da memória, que armazena o endereço do primeiro índice do vetor.
 
   - **Exemplo de vetor em linguagem C:**
     - Nesse código, usuário insere o tamanho fixo do vetor e, em seguida, insira os valores para preenchê-lo. Após isso o vetor é passado como parâmetro para a função que incrementa seus valores com base no índice.
