@@ -130,7 +130,7 @@ void liberarTabuleiro(Tabuleiro* tabuleiro) {
     Node* criarNode(int data) {
         Node* newNode = (Node*)malloc(sizeof(Node));
         newNode->data = data;
-        newNode->next = newNode; // Referência para si mesmo
+        newNode->next = newNode;
         return newNode;
     }
 
@@ -257,18 +257,161 @@ void liberarTabuleiro(Tabuleiro* tabuleiro) {
      * Pop: Remove e retorna o elemento do topo da pilha.
      * Top: Retorna o elemento no topo da pilha sem removê-lo.
      * Empty: Verifica se a pilha está vazia.
-  
+
 - **Implementação de Pilha com Vetor:**
     - Uma pilha implementada com vetor utiliza um array para armazenar os elementos da pilha, E mantém um índice que aponta para o topo da pilha.
     - É uma forma de acessar rapidamente aos elementos da pilha.
     - Possui um tamanho fixo, podendo ser redimensionado manualmente.
     - Pode resultar em estouro de pilha se o tamanho máximo for atingido.
 
+  - **Exemplo de implementação em C:**
+    ```C
+    #include <stdio.h>
+    #include <stdlib.h>
+
+    #define MAX_SIZE 10
+
+    struct Pilha {
+        int items[MAX_SIZE];
+        int top;
+    };
+
+    typedef struct Pilha Pilha;
+
+    Pilha criarPilha() {
+        Pilha pilha;
+        pilha.top = -1;
+        return pilha;
+    }
+
+    int estaVazia(Pilha* pilha) {
+        return pilha->top == -1;
+    }
+
+    int estaCheia(Pilha* pilha) {
+        return pilha->top == MAX_SIZE - 1;
+    }
+
+    void empilhar(Pilha* pilha, int valor) {
+        if (!estaCheia(pilha)) {
+            pilha->items[++pilha->top] = valor;
+        } else {
+            printf("Erro: a pilha está cheia, %d.\n", valor);
+        }
+    }
+
+    int desempilhar(Pilha* pilha) {
+        if (!estaVazia(pilha)) {
+            return pilha->items[pilha->top--];
+        } else {
+            printf("Erro: a pilha está vazia.\n");
+            return -1;
+        }
+    }
+
+    int topo(Pilha* pilha) {
+        if (!estaVazia(pilha)) {
+            return pilha->items[pilha->top];
+        } else {
+            printf("Erro: a pilha está vazia.\n");
+            return -1;
+        }
+    }
+
+    int main() {
+        Pilha pilha = criarPilha();
+
+        empilhar(&pilha, 1);
+        empilhar(&pilha, 2);
+        empilhar(&pilha, 3);
+
+        printf("Topo da pilha: %d\n", topo(&pilha));
+
+        printf("Desempilhando: %d\n", desempilhar(&pilha));
+        printf("Topo da pilha: %d\n", topo(&pilha));
+
+        return 0;
+    }
+  ```
+
 - **Implementação de Pilha com Lista Encadeada:**
-  - Uma pilha implementada com lista encadeada usa nós para representar os elementos da pilha. O nó no topo da pilha é a cabeça da lista.
-  - Possui tamanho dinâmico, e sem riscos de estouro da pilha.
-  - Acesso não tão rápido quanto em uma implementação de vetor.
-  - Usa mais memória devido aos nós.
+    - Uma pilha implementada com lista encadeada usa nós para representar os elementos da pilha. O nó no topo da pilha é a cabeça da lista.
+    - Possui tamanho dinâmico, e sem riscos de estouro da pilha.
+    - Acesso não tão rápido quanto em uma implementação de vetor.
+    - Usa mais memória devido aos nós.
+
+  - **Exemplo de implementação em C:**
+    ```C
+    #include <stdio.h>
+    #include <stdlib.h>
+
+    struct Node {
+        int data;
+        struct Node* next;
+    };
+
+    typedef struct Node Node;
+
+    struct Pilha {
+        Node* top;
+    };
+
+    typedef struct Pilha Pilha;
+
+    Pilha criarPilha() {
+        Pilha pilha;
+        pilha.top = NULL;
+        return pilha;
+    }
+
+    int estaVazia(Pilha* pilha) {
+        return pilha->top == NULL;
+    }
+
+    void empilhar(Pilha* pilha, int valor) {
+        Node* newNode = (Node*)malloc(sizeof(Node));
+        newNode->data = valor;
+        newNode->next = pilha->top;
+        pilha->top = newNode;
+    }
+
+    int desempilhar(Pilha* pilha) {
+        if (!estaVazia(pilha)) {
+            Node* temp = pilha->top;
+            int valor = temp->data;
+            pilha->top = temp->next;
+            free(temp);
+            return valor;
+        } else {
+            printf("Erro: a pilha está vazia.\n");
+            return -1;
+        }
+    }
+
+    int topo(Pilha* pilha) {
+        if (!estaVazia(pilha)) {
+            return pilha->top->data;
+        } else {
+            printf("Erro: a pilha está vazia.\n");
+            return -1;
+        }
+    }
+
+    int main() {
+        Pilha pilha = criarPilha();
+
+        empilhar(&pilha, 1);
+        empilhar(&pilha, 2);
+        empilhar(&pilha, 3);
+
+        printf("Topo da pilha: %d\n", topo(&pilha));
+
+        printf("Desempilhando: %d\n", desempilhar(&pilha));
+        printf("Topo da pilha: %d\n", topo(&pilha));
+
+        return 0;
+    }
+  ```  
 
 ## Filas:
 - **Fila:**
@@ -283,18 +426,206 @@ void liberarTabuleiro(Tabuleiro* tabuleiro) {
   - Possui acesso rápido às operações de enfileirar e desenfileirar.
   - Tamanho fixo. Pode resultar em estouro de fila se o tamanho máximo for atingido.
 
+  ```C
+    #include <stdio.h>
+    #include <stdlib.h>
+
+    #define MAX_SIZE 10
+
+    struct Lista {
+        int items[MAX_SIZE];
+        int tamanho;
+    };
+
+    typedef struct Lista Lista;
+
+    Lista criarLista() {
+        Lista lista;
+        lista.tamanho = 0;
+        return lista;
+    }
+
+    int estaVazia(Lista* lista) {
+        return lista->tamanho == 0;
+    }
+
+    int estaCheia(Lista* lista) {
+        return lista->tamanho == MAX_SIZE;
+    }
+
+    void inserir(Lista* lista, int valor) {
+        if (!estaCheia(lista)) {
+            lista->items[lista->tamanho] = valor;
+            lista->tamanho++;
+        } else {
+            printf("Erro: a lista está cheia, %d.\n", valor);
+        }
+    }
+
+    void remover(Lista* lista, int indice) {
+        if (indice >= 0 && indice < lista->tamanho) {
+            for (int i = indice; i < lista->tamanho - 1; i++) {
+                lista->items[i] = lista->items[i + 1];
+            }
+            lista->tamanho--;
+        } else {
+            printf("Erro: índice fora dos limites.\n");
+        }
+    }
+
+    int consultar(Lista* lista, int indice) {
+        if (indice >= 0 && indice < lista->tamanho) {
+            return lista->items[indice];
+        } else {
+            printf("Erro: índice fora dos limites.\n");
+            return -1;
+        }
+    }
+
+    int main() {
+        Lista lista = criarLista();
+
+        inserir(&lista, 1);
+        inserir(&lista, 2);
+        inserir(&lista, 3);
+
+        printf("Elemento na posição 1: %d\n", consultar(&lista, 1));
+
+        remover(&lista, 0);
+
+        printf("Elemento na posição 0 após remoção: %d\n", consultar(&lista, 0));
+
+        return 0;
+    }
+  ```
+
 - **Implementação de Fila com Lista Encadeada:**
   - Uma fila implementada com lista encadeada usa nós para representar os elementos da fila. Mantém referências para o nó da frente e o nó de trás da fila.
   - Tamanho dinâmico. Não há preocupações com estouro de fila.
   - O acesso às operações pode ser mais lento do que em uma implementação de vetor.
   - Usa mais memória devido aos nós.
   
-- **Implementação de Fila com Lista Encadeada:**
+- **Implementação de Fila Dupla:**
   - Uma fila dupla, permite a inserção e remoção de elementos em ambas as extremidades (frente e trás) da fila.
+  ![Representação de fila dupla](https://www.mundojs.com.br/wp-content/uploads/2018/02/insertion-and-deletion-in-a-deque.jpg)
 
 - **Fila Dupla com Lista Encadeada:**
   - Uma fila dupla implementada com lista encadeada é semelhante à fila com lista encadeada, mas permite a inserção e remoção de elementos tanto na frente quanto na parte de trás
   - Acesso às operações pode ser mais lento do que em outras estruturas para certas operações.
+
+  ```C
+    #include <stdio.h>
+    #include <stdlib.h>
+
+    struct Node {
+        int data;
+        struct Node* next;
+        struct Node* prev;
+    };
+
+    typedef struct Node Node;
+
+    struct FilaDupla {
+        Node* frente;
+        Node* tras;
+    };
+
+    typedef struct FilaDupla FilaDupla;
+
+    FilaDupla criarFilaDupla() {
+        FilaDupla fila;
+        fila.frente = NULL;
+        fila.tras = NULL;
+        return fila;
+    }
+
+    int estaVazia(FilaDupla* fila) {
+        return (fila->frente == NULL && fila->tras == NULL);
+    }
+
+    void enfileirarFrente(FilaDupla* fila, int valor) {
+        Node* newNode = (Node*)malloc(sizeof(Node));
+        newNode->data = valor;
+        newNode->next = NULL;
+        newNode->prev = NULL;
+
+        if (estaVazia(fila)) {
+            fila->frente = newNode;
+            fila->tras = newNode;
+        } else {
+            newNode->next = fila->frente;
+            fila->frente->prev = newNode;
+            fila->frente = newNode;
+        }
+    }
+
+    void enfileirarTras(FilaDupla* fila, int valor) {
+        Node* newNode = (Node*)malloc(sizeof(Node));
+        newNode->data = valor;
+        newNode->next = NULL;
+        newNode->prev = NULL;
+
+        if (estaVazia(fila)) {
+            fila->frente = newNode;
+            fila->tras = newNode;
+        } else {
+            newNode->prev = fila->tras;
+            fila->tras->next = newNode;
+            fila->tras = newNode;
+        }
+    }
+
+    int desenfileirarFrente(FilaDupla* fila) {
+        if (!estaVazia(fila)) {
+            Node* temp = fila->frente;
+            int valor = temp->data;
+            if (fila->frente == fila->tras) {
+                fila->frente = NULL;
+                fila->tras = NULL;
+            } else {
+                fila->frente = fila->frente->next;
+                fila->frente->prev = NULL;
+            }
+            free(temp);
+            return valor;
+        } else {
+            printf("Erro: a fila dupla está vazia.\n");
+            return -1;
+        }
+    }
+
+    int desenfileirarTras(FilaDupla* fila) {
+        if (!estaVazia(fila)) {
+            Node* temp = fila->tras;
+            int valor = temp->data;
+            if (fila->frente == fila->tras) {
+                fila->frente = NULL;
+                fila->tras = NULL;
+            } else {
+                fila->tras = fila->tras->prev;
+                fila->tras->next = NULL;
+            }
+            free(temp);
+            return valor;
+        } else {
+            printf("Erro: a fila dupla está vazia.\n");
+            return -1;
+        }
+    }
+
+    int main() {
+        FilaDupla fila = criarFilaDupla();
+
+        enfileirarFrente(&fila, 1);
+        enfileirarFrente(&fila, 2);
+        enfileirarTras(&fila, 3);
+
+        printf("Desenfileirando da frente: %d\n", desenfileirarFrente(&fila));
+        printf("Desenfileirando da parte de trás: %d\n", desenfileirarTras(&fila));
+
+        return 0;
+    }
+  ```
 
 #### Referências Bibliográficas
 1. Waldemar Celes. Renato Cerqueira. José Lucas Rangel. Introdução a Estrutura de Dados: Com Técnicas de Programação em C.
